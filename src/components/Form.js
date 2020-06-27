@@ -162,8 +162,11 @@ export default (props) => {
 		})
 	}
 
-	const saveData = e => {
+	const saveData = (group) => e => {
 		const form = db.get('form')
+		group.map(field => { 
+			form[field]=document.querySelector('#'+field).value 
+		})
 		form['id'] = Math.round(Math.random() / .0001) 
 		const users = db.get('users') || []
 		users.push(form)
@@ -308,7 +311,7 @@ export default (props) => {
 			 variant="contained" 
 			 color="primary" 
 			 size="large"  
-			 onClick={saveData}>
+			 onClick={saveData(group[2])}>
 			 	Salvar
 			 </Button>
 		</div>)}

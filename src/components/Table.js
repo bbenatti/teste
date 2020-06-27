@@ -33,13 +33,10 @@ const StyledTableRow = withStyles( theme => ({
     },
   },
 }))(TableRow)
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
+  const top = 50
+  const left = 50 
 
   return {
     top: `${top}%`,
@@ -77,7 +74,7 @@ export default function CustomTable(props) {
 
 	var users = props.data.length ? props.data : []
 	if(props.isUserInput)
-		users = db.get('users')
+		users = db.get('users') || []
 	
 	const onClick = (e) => {
 		const userId = e.target.getAttribute('data-id')||0
@@ -87,10 +84,29 @@ export default function CustomTable(props) {
 	}
 
 	const getUser = () =>{
-		if(!userState.hasOwnProperty('nome'))
+		if(!userState.hasOwnProperty('nome')&&!userState.hasOwnProperty('name'))
 			return (<span></span>)
-
-		return (<span><b>Nome:</b> {userState.nome}</span>)
+		if(props.isUserInput){
+			return (
+				<div>
+					<p><b>Nome:</b> {userState.nome + ' ' + useState.sobrenome} </p>
+					<p><b>E-mail:</b> {userState.email||''} </p>
+					<p><b>Telefone:</b> {userState.telefone||''} </p>
+					<p><b>CEP:</b> {userState.cep||''} </p>
+					<p><b>Endereço:</b> {userState.endereco1||''} </p>
+					<p><b>CPF:</b> {userState.cpf||''} </p>
+					<p><b>Data de Nascimento:</b> {(userState.nascimento)||''} </p>
+					<p><b>Renda:</b> {userState.renda||''} </p>
+				</div>
+			)
+		}else return(
+			<div>
+				<p><b>Nome:</b> {userState.name + ' ' + useState.sobrenome} </p>
+				<p><b>E-mail:</b> {userState.email||''} </p>
+				<p><b>Telefone:</b> {userState.phone||''} </p>
+				<p><b>CEP:</b> {userState.address.zipcode||''} </p>
+				<p><b>Endereço:</b> {userState.address.street||''} </p>
+			</div>)
 	}
 
 	const getCells = (isUserInput) => {
